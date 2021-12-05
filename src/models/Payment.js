@@ -8,16 +8,16 @@ const paymentSchema = new Schema({
             default: "created"
          },
          payment_id:{
-            type: Number,
-             default: 0
+            type: String,
+             default: ""
          },
          payment_status:{
              type: String,
              default: ""
          },
          merchant_order_id: {
-            type: Number,
-            default: 0
+            type: String,
+            default: ""
          }
 
 

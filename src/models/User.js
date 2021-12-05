@@ -51,7 +51,7 @@ const userSchema = new Schema({
     },
     Role: {
         type: String,
-        enum: ["user", "amdin", "superAdmin"],
+        enum: ["user", "admin", "superAdmin"],
         default: "user"
     },
     isDelivery: {

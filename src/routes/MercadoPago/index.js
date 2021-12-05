@@ -1,4 +1,5 @@
-const Order = require('../../models/Order');
+const Order = require('../../models/Payment');
+const User = require('../../models/User');
 // const server = require('express').Router();
 const { Router } = require('express');
 const router = Router();
@@ -13,7 +14,11 @@ mercadopago.configure({
   access_token: ACCESS_TOKEN
 });
 
-router.get("/mercadopago", (req, res, next) => {
+router.get("/mercadopago", (req, res) => {
+
+  const { id } = req.params;
+  const user = User.findById(id);
+  const carritoReal = user.cart;
 
     const id_orden= 1
   
@@ -28,7 +33,7 @@ router.get("/mercadopago", (req, res, next) => {
       title: i.title,
       unit_price: i.price,
       quantity: i.quantity,
-    }))
+    })) //cambiar la manera de acceder, usar carritoreal.
   
     // Crea un objeto de preferencia
     let preference = {
@@ -43,9 +48,9 @@ router.get("/mercadopago", (req, res, next) => {
         installments: 3  //Cantidad máximo de cuotas
       },
       back_urls: {
-        success: 'http://localhost:3000/mercadopago/pagos',
-        failure: 'http://localhost:3000/mercadopago/pagos',
-        pending: 'http://localhost:3000/mercadopago/pagos',
+        success: 'http://localhost:4000/mercadopago/pagos',
+        failure: 'http://localhost:4000/mercadopago/pagos',
+        pending: 'http://localhost:4000/mercadopago/pagos',
       },
     };
   
@@ -74,27 +79,27 @@ router.get("/mercadopago", (req, res, next) => {
     console.log("EXTERNAL REFERENCE ", external_reference)
   
     //Aquí edito el status de mi orden
-    Order.findByPk(external_reference)
+    Order.find(external_reference)
     .then((order) => {
       order.payment_id= payment_id
       order.payment_status= payment_status
       order.merchant_order_id = merchant_order_id
       order.status = "completed"
       console.info('Salvando order')
-      order.save()
+      //order.save()
       .then((_) => {
         console.info('redirect success')
         
-        return res.redirect("http://localhost:3000")
+        return res.redirect("http://localhost:4000")
       })
       .catch((err) =>{
         console.error('error al salvar', err)
-        return res.redirect(`http://localhost:3000/?error=${err}&where=al+salvar`)
+        return res.redirect(`http://localhost:4000/?error=${err}&where=al+salvar`)
       })
     })
     .catch(err =>{
       console.error('error al buscar', err)
-      return res.redirect(`http://localhost:3000/?error=${err}&where=al+buscar`)
+      return res.redirect(`http://localhost:4000/?error=${err}&where=al+buscar`)
     })
   
     //proceso los datos del pago 
