@@ -22,9 +22,7 @@ const Checkout = () => {
               <a href ="https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1031007396-6d4c2fb7-6354-423b-a13a-2d98cd91a4af">PAGAR</a>
               </div>
              
-        <div 
-        // // className={s.gridContainer} 
-        >  
+        <div>  
         {productos.map((producto, i) => {
           return(
             <div 

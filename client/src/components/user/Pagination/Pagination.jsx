@@ -2,11 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPage, getProducts } from "../../../redux/actions/products.actions";
 
-const Pagination = () => {
+const Pagination = ({products}) => {
 
 	const productsPerPage = 12;
 	const dispatch = useDispatch();
-	const { page, products   } = useSelector(state => state.products);
+	const { page } = useSelector(state => state.products);
+	// const [pagina, setPagina] = useState(0)
 
 	const changePage = (page) => {
 		dispatch(setPage(page))
@@ -15,7 +16,7 @@ const Pagination = () => {
 		// 	dispatch(getProducts({category}));
 		// }
 		// else {
-			dispatch(getProducts({}));
+			dispatch(getProducts({products}));
 		// }
 	}
 

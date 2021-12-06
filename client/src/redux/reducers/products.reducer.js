@@ -26,7 +26,7 @@ export function productsReducer(state = initialState, action) {
       case SET_PAGE:
         return {
             ...state,
-            page: action.payload
+            page: [action.payload]
         };
       case REMOVE_PRODUCT:
         return {

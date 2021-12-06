@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeProducts } from '../../../redux/actions/products.actions';
 import Card from '../Card/Card';
 import './Cards.scss';
+import Pagination from '../Pagination/Pagination.jsx';
 
 
 const Cards = ({products}) => {
@@ -16,6 +17,7 @@ const Cards = ({products}) => {
     return (
 
         <div className='container'>
+            <Pagination />
            {
             !products?.length 
                 ? <p>Loading...</p> 
