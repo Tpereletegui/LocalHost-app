@@ -1,6 +1,7 @@
 const passport = require("passport");
 const localStrategy = require('passport-local').Strategy;
 const User = require("../../../models/User");
+const Product = require("../../../models/Product");
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
@@ -54,3 +55,31 @@ passport.use(new JWTStrategy({
         done(e);
     }
 }));
+
+const verificacionId = async (id) => {
+    try {
+        let find = await User.findById(id);
+        let obj = { bool: false };
+        if(find !== null) return obj = { bool: true, type: find };
+        return obj;
+    } catch(error) {
+        console.log(error);
+    }
+};
+
+const verificacionP = async (name) => {
+    try {
+        let find = await Types.findOne({name: name}); 
+        // console.log('find verificacionT', find);
+        let obj = { bool: false }; 
+        if(find !== null) return obj = { bool: true, type: find._id };
+        return obj;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports = {
+    verificacionId,
+    verificacionP
+};
