@@ -111,7 +111,7 @@ const SearchBar = () => {
                         </div> :
                         null
                 }
-                <Button variant='text' style={{'color' : '#EEEEEE'}} className="button"><SearchIcon/></Button>
+                <Button variant='text' style={{'color' : '#EEEEEE'}} className="button">Search</Button>
             </form>
         </div>
     )
