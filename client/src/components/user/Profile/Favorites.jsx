@@ -12,18 +12,18 @@ const Favorites = () => {
         <div className={style.ctnSup}>
             <NavBarProfile />
             <div className={style.ctnDetail}>
-                <h1 className={style.titlePrin}> Productos Favoritos</h1>
-            </div>
-            <div className={style.cardFav}> 
+                <h1 className={style.titlePrin}> Productos Favoritos</h1>   
             {
                 favorites?.length?
                 favorites.map(x => {
                     return(
                      <Card className={style.Card} key={x._id} product={x} favorites={favorites}  />
                     )
-                }) : <p>no tenes ninguno Pa</p>
+                }) : <p style={{fontSize : '30px'}}>No hay Favoritos</p>
             }
+            
             </div>
+           
         </div>
     )
 }

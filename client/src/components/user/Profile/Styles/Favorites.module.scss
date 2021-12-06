@@ -5,6 +5,9 @@
 .titlePrin {
   @include title;
   text-align: center;
+  position: relative;
+  margin-bottom: 30%;
+
 }
 
 .ctnSup {
@@ -13,6 +16,10 @@
 
 .ctnDetail{
     @include ctnMedida;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     
 }
 
