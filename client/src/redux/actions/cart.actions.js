@@ -6,6 +6,7 @@ export const SET_TALLE = "SET_TALLE";
 export const SET_COUNT = "SET_COUNT";
 export const DELETE_CART_ITEM = 'DELETE_CART_ITEM ';
 export const ADD_EMPTY_CART='ADD_EMPTY_CART';
+export const DELETE_EMPTY_CART = 'DELETE_EMPTY_CART';
 
 
 
@@ -13,8 +14,9 @@ export const ADD_EMPTY_CART='ADD_EMPTY_CART';
 Lo que recibe esta función por parámetro (cartProduct) es un objeto con info del item
 y del usuario. */
 
-export const addItemToCart = ({idUser, idItem}) => async (dispatch) => { 
-    const { data } = axios.put(`product/cart/${idUser}/${idItem}`)
+export const addItemToCart = (obj) => async (dispatch) => { 
+    console.log(obj)
+    const { data } = await axios.put(`/user/cart/${obj.email}`, obj.producto)
     return dispatch({
         type: ADD_ITEM_CART,
         payload: data
@@ -36,11 +38,11 @@ export const DeleteItemCart = (id) => {
     }
 }
 
-/* export const addItemToCart = () => {
+export const DeleteEmptyCart = () => {
     return {
-        type: ADD_ITEM_TO_CART,
+        type: DELETE_EMPTY_CART
     }
-}  */
+}
 
 export const setProduct = (object) => {
     return {

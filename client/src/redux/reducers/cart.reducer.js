@@ -3,11 +3,12 @@ import {
   SET_TALLE,
   SET_COUNT,
   ADD_ITEM_CART,
-  ADD_EMPTY_CART
+  ADD_EMPTY_CART,
+  DELETE_EMPTY_CART
 } from "../actions/cart.actions";
 
 const initialState = {
-  cart: JSON.parse(localStorage.getItem('cart')), // [{id: 1, talle: "S", count: 2}, {id: 1, talle: "M", count: 1}]
+  cart: [], // [{id: 1, talle: "S", count: 2}, {id: 1, talle: "M", count: 1}]
   cartProduct: {
     product: null,
     talle: "", // "S"
@@ -20,45 +21,6 @@ export function cartReducer(state = initialState, { type, payload }) {
 
   switch(type){
 
-    /* case ADD_ITEM_CART:
-      if (state.cart.length) {
-        let item = { ...state.cartProduct }
-        let filtered = state.cart.filter(x => 
-          (x.product._id === state.cartProduct.product._id) 
-          && 
-          (x.talle === state.cartProduct.talle)
-        );
-        if (filtered.length === 0) {
-          return {
-            ...state,
-            cart: [...state.cart, item]
-          }
-        }
-        if (filtered.length === 1) {
-          item = filtered[0];
-          item = {
-            ...item,
-            count: item.count + state.cartProduct.count
-          }
-          let array = [];
-          state.cart.forEach(x => {
-            if ((x.product._id !== item.product.id) && (x.talle !== item.talle)) {
-              array.push(x)
-            }
-          })
-          array = [...array, item]
-          console.log(array)
-          return {
-            ...state,
-            cart: array
-          }
-        }
-      }
-      return {
-        ...state,
-        cart: [state.cartProduct]
-      }
- */
     case ADD_EMPTY_CART:
       let product = []
       if (state.emptyCart) {
@@ -108,25 +70,11 @@ export function cartReducer(state = initialState, { type, payload }) {
         cart: JSON.parse(localStorage.getItem('cart')) 
       }  
 
-      /*let product =[];
-      let carritoVacio= JSON.parse(localStorage.getItem('cart'));
-      console.log(carritoVacio)
-      if(carritoVacio) {
-        console.log('marito')
-        product = [...carritoVacio, payload ]
-        localStorage.setItem("cart", JSON.stringify(product));
-       
-      }else {
-        product = [payload]
-        localStorage.setItem("cart", JSON.stringify(product));
-      }
-      return {
-        emptyCart: JSON.parse(localStorage.getItem('cart')),
-        cart: JSON.parse(localStorage.getItem('cart'))
-      } */
+     
     case ADD_ITEM_CART:
       return {
-        emptyCart: product
+        ...state,
+        cart: payload
       }  
     case SET_PRODUCT:
       return {
@@ -154,6 +102,11 @@ export function cartReducer(state = initialState, { type, payload }) {
           count: payload
         }
       }
+      case DELETE_EMPTY_CART:
+        return {
+          ...state,
+          emptyCart: localStorage.clear()
+        }
 
     default:
       return state;

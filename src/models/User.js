@@ -63,15 +63,9 @@ const userSchema = new Schema({
         autopopulate: true
     }],
     cart: [{
-        cart: {
         type: Schema.Types.ObjectId,
         ref: 'Product',
         autopopulate: true
-        },
-        qtyCart: {
-        type: Number,
-        default: 1
-            }
     }]
 }, {
     versionKey: false,

@@ -11,9 +11,12 @@ import Modal from 'react-modal';
 const Card = ({ product }) => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch();
-
+    const producto = useSelector(state => state.cart.cartProduct)
     const [num, setNum] = useState(1);
     const { talle } = useSelector(state => state.cart.cartProduct)
+    const user = JSON.parse(localStorage.getItem('user'))
+    let email= user?.user.email;
+    console.log('id', email)
 
     function onClick(e) {
         e.preventDefault();
@@ -31,7 +34,11 @@ const Card = ({ product }) => {
     }
 
     const addCart = () => {
-        dispatch(addEmptyCart(product));
+        let obj={
+            email : email,
+            producto : producto
+        }
+        dispatch(addItemToCart(obj));
         closeModal();
     }
 

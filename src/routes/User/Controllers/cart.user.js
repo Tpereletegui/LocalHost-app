@@ -5,44 +5,68 @@ const Product = require('../../../models/Product');
 
 const addCart = async( req, res) => {
     //const{ idUser,idItem } =req.params;
-    const { idUser,idItem} = req.params;  
-    function splitt(string) {
-        let id = string.split('"');
-        let dividido = id[1];
-        return dividido;
-      } 
-    //const { idItem } = req.body;
+    const {  email } = req.params;  
+    const producto =req.body;
+    /* console.log('producto',req.body.product)
+    console.log('userId',userId) */
+   
     try {
-        let user= await User.findById(idUser);
-        let product= await Product.findById(idItem);
-        console.log('usercart',user.cart)
-        let cartUser= user.cart.cart;
+        let user= await User.find({email: email})
+        console.log('usuario', user)
+        let cart = user.cart;
         
-        //console.log('cartuser', cartUser[0]._id)
-         let filtered = cartUser.filter(
-            (x) => splitt(JSON.stringify(x.cart._id)) === product._id.toString()
-          );
-        console.log('filtered',filtered);
-        // /let productUser = await user.cart.find(x => x._id === idItem);
-        if(filtered){
-            filtered.count = 1;
-            let edit = await User.findByIdAndUpdate(idUser, {
-                cart: [...user.cart,filtered],
-             }, { new: true });
-             let editUser = await edit.save(); 
-             res.json(editUser);
-            
-        }else {
-        let edit = await User.findByIdAndUpdate(idUser, {
-           cart: [...user.cart,product],
+        if(cart?.length > 0 ){
+           let filtered= cart.filter(x => {
+               x.product._id === producto.product._id
+               && 
+            (x.product.talle === producto.product.talle)
+           }) 
+           if(filtered.length === 0) {
+               let carrito = [...cart, producto]
+              
+               let edit = await User.findByIdAndUpdate(userId, {
+                cart: carrito 
+            }, { new: true });
+            editUser = await edit.save();
+            console.log(editUser.cart)
+            res.json( editUser.cart);
+           }
+           if (filtered.length === 1){
+            let item = filtered[0];
+            item = {
+              ...item,
+              count: item.count + producto.count
+            }
+            let carrito = [];
+            cart.forEach(x => {
+            if ((x.product._id !== item.product._id) && (x.talle !== item.talle)) {
+              carrito.push(x)
+            }
+          })
+            carrito = [...carrito, item]
+          let edit = await User.findByIdAndUpdate(userId, {
+            cart: carrito 
+            }, { new: true });
+            editUser = await edit.save();
+            console.log(editUser)
+            res.json( editUser.cart);
+           }
+        }
+        
+        let edit = await User.findOneAndUpdate({email: email}, {
+            cart: [ producto] 
         }, { new: true });
-        let editUser = await edit.save(); 
-        res.json(editUser); 
-    }
+            editUser = await edit.save();
+            console.log(editUser)
+            res.json( editUser.cart);
+
     } catch (error) {
         console.log(error);
     }
 }
+
+
+
 
 
 
